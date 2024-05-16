@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../../services/pokemon.service';
+import { PokemonData } from '../../models/pokemonData';
 
 @Component({
   selector: 'app-card',
@@ -10,16 +11,32 @@ import { PokemonService } from '../../services/pokemon.service';
   styleUrl: './card.component.css'
 })
 export class CardComponent implements OnInit {
-  name:string = "Charizard"
+  pokemon:PokemonData 
+
   attributesTypes: string[] = ['FIRE', 'ROCK']
   
   constructor(
     private service:PokemonService
-  ){}
+  ){
+    this.pokemon = {
+      id:0, name:'',
+      sprites:{
+        front_default: ''
+      },types:[]
+    }
+  }
   
   ngOnInit(): void {
     this.service.getPokemon("pikachu").subscribe({
-      next: (res) => console.log(res),
+      next: (res) => {console.log(res)
+
+        this.pokemon = {
+          id: res.id,
+          name: res.name,
+          sprites: res.sprites,
+          types: res.types
+        }
+      },
       error: (err) => console.log(err)
     })
   }
