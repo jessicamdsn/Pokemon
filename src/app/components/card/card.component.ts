@@ -18,7 +18,10 @@ export class CardComponent implements OnInit {
   ){}
   
   ngOnInit(): void {
-    this.service.getPokemon("pikachu")
+    this.service.getPokemon("pikachu").subscribe({
+      next: (res) => console.log(res),
+      error: (err) => console.log(err)
+    })
   }
 
 }
